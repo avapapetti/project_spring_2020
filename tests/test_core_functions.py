@@ -9,26 +9,42 @@ import common_cnv_finder.core_functions as ccf
 
 # Define and read some input files contained in the data subdirectory of tests
 test_data_dir = Path(__file__).parent / "data"
-file1 = pd.read_csv(test_data_dir / "SL88823_20180802.cnv.csv", sep = "\t")
-file2 = pd.read_csv(test_data_dir / "SL88824_20180802.cnv.csv", sep = "\t")
+file1 = pd.read_csv(test_data_dir / "Test_Sample1.cnv.csv", sep = "\t")
+file2 = pd.read_csv(test_data_dir / "Test_Sample2.cnv.csv", sep = "\t")
 
 file1['Sample#'] = 1
 file2['Sample#'] = 2
 
-
-def test_common_csv_finder():
-    # define an expected result:
-    expected = ... # you will need to decide what you expect and code it here
-    # call common_csv_finder, you may have to subset it or something like that
-    # to make it easier to test. Then just write a basic sanity check. If you
-    # can, think of a test for false positives and false negatives
-    result = ccf.common_csv_finder(file1,file2,file_out="test_output.csv")
-    processed_result = ... # do some subsetting or whatever
-    assert processed_result == expected
+file3 = pd.read_csv(test_data_dir / "expected_cnvs.csv", sep = "\t")
 
 
-
-# def test_cnv_drop():
+def test_common_cnv_finder():
+    expected = file3
+    result = ccf.common_cnv_finder(test_data_dir / "Test_Sample1.cnv.csv",test_data_dir /
+            "Test_Sample2.cnv.csv",file_out="test_output.csv", min_cnv_length = 1000,
+            p_value_threshold = 0.90)
+    
+    pd.testing.assert_frame_equal(result, expected, check_dtype=False)    
+    
+def test_filter_by_cnv():
+    expected = file1
+    expected = expected.loc[expected.Chrom != 'chrM']
+    expected['CNV_Length'] = np.abs(file1.Start - file1.Stop)
+    expected = expected.loc[expected.CNV_Length >= 1000]
+    result = ccf.filter_by_cnv(file1, min_cnv_length = 1000, p_value_threshold = .90)
+    
+    assert 'chrM' not in result.Chrom
+    assert expected.CNV_Length.min() >= 1000
+    
+    pd.testing.assert_frame_equal(result, expected.drop(columns = ['CNV_Length']), check_dtype=False) 
+    
+def test_find_common_cnvs():
+    expected = file3
+    result = ccf.find_common_cnvs(ccf.filter_by_cnv(file1, min_cnv_length = 1000, p_value_threshold = .90),
+                ccf.filter_by_cnv(file2, min_cnv_length = 1000, p_value_threshold = .90))
+    pd.testing.assert_frame_equal(result, expected, check_dtype=False) 
+    
+    # def test_cnv_drop():
 #     file1_new = file1.drop(file1[file1.Chrom == 'chrM'].index)
 #     chroms = file1_new.Chrom.unique()
 #     assert 'chrM' not in chroms
