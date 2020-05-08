@@ -8,7 +8,7 @@ setuptools.setup(
     version="0.0.1",
     author="Ava Papetti",
     author_email="avapapetti@gmail.com",
-    description="A package that can be used to detect copy number variants (CNVs) found within two different individuals",
+    description="A tool to detect shared copy number variant (CNV) regions found within two different genomes",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/avapapetti/project_spring_2020",
