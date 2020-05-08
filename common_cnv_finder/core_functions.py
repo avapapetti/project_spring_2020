@@ -44,7 +44,7 @@ def find_common_cnvs(file1,file2, max_overlap):
     return common_cnvs
 
 def common_cnv_finder(fpath1,fpath2,file_out="common_cnvs.csv",min_cnv_length=1000, p_value_threshold=.90,
-                      max_overlap = 25):
+        max_overlap = 25):
 
     # Read datafiles
     df1 = read_cnv_file(fpath1,1)
