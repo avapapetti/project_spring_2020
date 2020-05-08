@@ -18,6 +18,12 @@ file2['Sample#'] = 2
 file3 = pd.read_csv(test_data_dir / "expected_cnvs.csv", sep = "\t")
 
 
+def test_read_cnv_file():
+    expected = file3.columns
+    result = ccf.read_cnv_file(test_data_dir / "Test_Sample1.cnv.csv",1)
+    assert expected.equals(result.columns)
+
+
 def test_common_cnv_finder():
     expected = file3
     result = ccf.common_cnv_finder(test_data_dir / "Test_Sample1.cnv.csv",test_data_dir /
