@@ -8,7 +8,7 @@ from pathlib import Path
 import common_cnv_finder.core_functions as ccf
 
 # Define and read some input files contained in the data subdirectory of tests
-test_data_dir = Path(__file__).parent / "data"
+test_data_dir = Path(__file__).parent / "Data"
 file1 = pd.read_csv(test_data_dir / "Test_Sample1.cnv.csv", sep = "\t")
 file2 = pd.read_csv(test_data_dir / "Test_Sample2.cnv.csv", sep = "\t")
 
