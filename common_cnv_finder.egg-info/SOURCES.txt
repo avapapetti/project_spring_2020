@@ -1,8 +1,0 @@
-README.md
-setup.py
-common_cnv_finder/__init__.py
-common_cnv_finder/core_functions.py
-common_cnv_finder.egg-info/PKG-INFO
-common_cnv_finder.egg-info/SOURCES.txt
-common_cnv_finder.egg-info/dependency_links.txt
-common_cnv_finder.egg-info/top_level.txt
